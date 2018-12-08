@@ -81,13 +81,19 @@ for k in fighters.keys():
 fighters_df = pandas.DataFrame.from_dict(fighters,orient='index')
 fighters_df.columns = ["_Age","_Weight","_Height","_avg_td_att","_avg_sig_str","_fights"]
 print fighters_df
-fighters_df.to_csv("fighters_data.csv",index=False)
+fighters_df.to_csv("fighters_data.csv",index=True)
 
 F = []
 for index,row in df.iterrows():
 	if row['B_Name'] not in fighters or row['R_Name'] not in fighters:
 		continue
 	res = row['winner']
-	F.append(fighters[row['B_Name']] + fighters[row['R_Name']] + [res])
-fights_df = pandas.DataFrame.from_records(F,columns = ["B_Age","B_Weight","B_Height","B_avg_td_att","B_avg_sig_str","B_fights"] + ["R_Age","R_Weight","R_Height","R_avg_td_att","R_avg_sig_str","R_fights"] + ["winner"] )
+	if res == 'blue':
+		res = -1
+	elif res == 'red':
+		res = 1
+	else:
+		res = 0
+	F.append([row['B_Name'],row['R_Name']] + fighters[row['B_Name']] + fighters[row['R_Name']] + [res])
+fights_df = pandas.DataFrame.from_records(F,columns = ['B_Name','R_Name'] + ["B_Age","B_Weight","B_Height","B_avg_td_att","B_avg_sig_str","B_fights"] + ["R_Age","R_Weight","R_Height","R_avg_td_att","R_avg_sig_str","R_fights"] + ["winner"] )
 fights_df.to_csv('fight_data.csv',index=False)
