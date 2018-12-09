@@ -1,6 +1,7 @@
 import pandas
 import math
 from sklearn.neighbors import KNeighborsClassifier
+
 _Age,_Weight,_Height,_avg_td_att,_avg_sig_str,_fights = range(6)
 fighters = {}
 df = pandas.read_csv("data.csv")
